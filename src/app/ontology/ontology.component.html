@@ -1,0 +1,125 @@
+<h2>{{title}}</h2>
+
+<div class="row">
+
+  <div class="col-6 mb-3 mt-3">
+
+    <div class="card bg-light">
+      <div class="card-header text-center bg-info text-white">GET ONTOLOGY</div>
+      <div class="card-body">
+        <div class="input-group mb-3 mt-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">Ontology Id</span>
+          </div>
+          <input type="text" class="form-control" [formControl]="ontologyId" id="ontology_id">
+          <div class="input-group-append">
+            <button class="btn btn-primary" type="button" id="button" [disabled]="ontologyId.invalid"
+                    (click)="getById()">Get
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <table class="table" *ngIf="ontology.ontologyId">
+        <tbody>
+        <tr>
+          <th scope="row" class="col-2">Ontology Id:</th>
+          <td>{{ontology.ontologyId}}</td>
+        </tr>
+        <tr>
+          <th scope="row" class="col-2">Title:</th>
+          <td>{{ontology.config.title}}</td>
+        </tr>
+        <tr>
+          <th scope="row" class="col-2">Description:</th>
+          <td>{{ontology.config.description}}</td>
+        </tr>
+        <tr>
+          <th scope="row" class="col-2">Definition Properties:</th>
+          <td>
+            <table>
+              <tr *ngFor="let definition of ontology.config.definitionProperties">
+                <td>{{definition}}</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row" class="col-2">Synonym Properties:</th>
+          <td>
+            <table>
+              <tr *ngFor="let synonym of ontology.config.synonymProperties">
+                <td>{{synonym}}</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="errorMessage">
+      <div class="alert alert-danger mt-3">{{errorMessage}}</div>
+    </div>
+  </div>
+
+
+  <div class="col-6">
+
+    <div class="card bg-light mb-3 mt-3">
+      <div class="card-header bg-success text-center text-white">SAVE ONTOLOGY</div>
+      <form [formGroup]="ontologyForm" (ngSubmit)="onSubmit()" class="card-body">
+
+        <div class="input-group mb-3 mt-3">
+          <span class="input-group-text">Ontology Id</span>
+          <input type="text" class="form-control" formControlName="ontologyId" id="ontology-id">
+        </div>
+
+        <div class="input-group mb-3">
+          <span class="input-group-text">Title</span>
+          <input type="text" class="form-control" formControlName="title" id="title">
+        </div>
+
+        <div class="input-group mb-3">
+          <span class="input-group-text">Description</span>
+          <input type="text" class="form-control" formControlName="description" id="description">
+        </div>
+
+          <span class="input-group-text">Definition Properties</span>
+          <div *ngFor="let definition of definitionProperties.controls; let i=index" class="mb-3">
+            <div formArrayName="definitionProperties">
+            <div class="input-group">
+              <input type="text" class="form-control" id="definition" [formControlName]="i">
+              <div class="input-group-append">
+                <button class="btn btn-primary" id="definition-btn" type="button"
+                        (click)="addDefinition()">Add
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+          <span class="input-group-text">Synonym Properties</span>
+          <div  *ngFor="let synonym of synonymProperties.controls; let j=index" class="mb-3">
+            <div formArrayName="synonymProperties">
+            <div class="input-group">
+              <input type="text" class="form-control" id="synonym" [formControlName]="j">
+              <div class="input-group-append">
+                <button class="btn btn-primary" id="synonym-btn" type="button"
+                        (click)="addSynonym()">Add
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center">
+          <button type="submit"  class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>
